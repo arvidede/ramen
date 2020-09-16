@@ -17,13 +17,13 @@ body {
 }
 
 .gallery {
-    padding: 0 4rem;
+    padding: 0 4rem 4rem 4rem;
     grid-gap: 1rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 
     @media screen and (max-width: 768px) {
-        padding: 0 2rem;
+        padding: 0 2rem 2rem 2rem;
     }
 }
 
@@ -73,17 +73,6 @@ body {
     }
 }
 
-.fullscreen-bg {
-    backdrop-filter: blur(6px);
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    background-color: rgba(0, 0, 0, 0.9);
-    cursor: pointer;
-}
-
 .fullscreen {
     position: fixed;
     top: 0;
@@ -91,12 +80,13 @@ body {
     right: 0;
     height: 100vh;
     width: 100vw;
-    transition: ease 150ms;
+    transition: ease 350ms;
 
     &.show {
         opacity: 1;
         z-index: 999;
         display: visible;
+        transition: ease 250ms;
     }
 
     &.hide {
@@ -111,6 +101,19 @@ body {
     img {
         margin: 0 auto;
         height: 100%;
+        max-width: 100vw;
+        object-fit: cover;
         width: auto;
+    }
+
+    .fullscreen-bg {
+        backdrop-filter: blur(6px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        background-color: rgba(0, 0, 0, 0.9);
+        cursor: pointer;
     }
 }
