@@ -58,13 +58,13 @@ export const FullScreen: React.FC<FullScreenProps> = ({ url, show, onClose, onCh
         <div className={className}>
             <img src={url} alt="" className={className} />
             <div className="fullscreen-bg" onClick={handleClose} />
-            <button>
+            <button className="previous" onClick={() => onChange(true)}>
                 <Previous />
             </button>
-            <button>
+            <button className="close" onClick={handleClose}>
                 <Close />
             </button>
-            <button>
+            <button className="next" onClick={() => onChange(false)}>
                 <Next />
             </button>
         </div>

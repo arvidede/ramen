@@ -6,7 +6,6 @@ export const Next: React.FC = () => (
             points="268 112 412 256 268 400"
             style={{
                 fill: 'none',
-                stroke: '#000',
                 strokeLinecap: 'round',
                 strokeLinejoin: 'round',
                 strokeWidth: '48px',
@@ -19,7 +18,6 @@ export const Next: React.FC = () => (
             y2="256"
             style={{
                 fill: 'none',
-                stroke: '#000',
                 strokeLinecap: 'round',
                 strokeLinejoin: 'round',
                 strokeWidth: '48px',
@@ -34,7 +32,6 @@ export const Previous: React.FC = () => (
             points="244 400 100 256 244 112"
             style={{
                 fill: 'none',
-                stroke: '#000',
                 strokeLinecap: 'round',
                 strokeLinejoin: 'round',
                 strokeWidth: '48px',
@@ -47,7 +44,6 @@ export const Previous: React.FC = () => (
             y2="256"
             style={{
                 fill: 'none',
-                stroke: '#000',
                 strokeLinecap: 'round',
                 strokeLinejoin: 'round',
                 strokeWidth: '48px',
@@ -65,7 +61,6 @@ export const Close: React.FC = () => (
             y2="144"
             style={{
                 fill: 'none',
-                stroke: '#000',
                 strokeLinecap: 'round',
                 strokeLinejoin: 'round',
                 strokeWidth: '48px',
@@ -78,7 +73,6 @@ export const Close: React.FC = () => (
             y2="368"
             style={{
                 fill: 'none',
-                stroke: '#000',
                 strokeLinecap: 'round',
                 strokeLinejoin: 'round',
                 strokeWidth: '32px',

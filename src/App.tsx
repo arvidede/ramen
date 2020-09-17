@@ -36,7 +36,8 @@ function App() {
     }
 
     const handleChangePhoto = (direction: boolean) => {
-        setSelectedPhoto(selectedPhoto + ((direction ? -1 : 1) % photos.length))
+        const next = (selectedPhoto + (direction ? -1 : 1)) % photos.length
+        setSelectedPhoto(next >= 0 ? next : photos.length - 1)
     }
 
     return (
@@ -58,6 +59,11 @@ function App() {
                     url={photo ? photo.path : ''}
                 />
             </section>
+            <footer>
+                <p>
+                    Powered with 💜 by <a href="https://edenheim.se">Arvid</a>
+                </p>
+            </footer>
         </div>
     )
 }
