@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Close, Next, Previous } from '../assets/'
+import { Image } from './Image'
 
 const TRANSITION_TIMEOUT = 300
 
@@ -13,6 +14,8 @@ interface FullScreenProps {
 export const FullScreen: React.FC<FullScreenProps> = ({ url, show, onClose, onChange }) => {
     const [isEntering, setIsEntering] = useState(false)
     const [isLeaving, setIsLeaving] = useState(false)
+
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         if (show) {
@@ -56,7 +59,7 @@ export const FullScreen: React.FC<FullScreenProps> = ({ url, show, onClose, onCh
 
     return (
         <div className={className}>
-            <img src={url} alt="" className={className} />
+            <Image src={url} className={className} />
             <div className="fullscreen-bg" onClick={handleClose} />
             <button className="previous" onClick={() => onChange(true)}>
                 <Previous />
