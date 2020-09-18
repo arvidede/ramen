@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
-import app from 'firebase/app'
+import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 
@@ -24,22 +24,36 @@ const devConfig = {
 
 const config = process.env.NODE_ENV === 'production' ? prodConfig : devConfig
 
-class Firebase {
+interface FirebaseType {
+    db: any
+    auth: any
+    doLogin: () => void
+    doUploadImage: () => void
+    doDeleteImage: () => void
+}
+
+export class Firebase {
+    db: any
+    auth: any
     constructor() {
-        app.initializeApp(config)
-        this.db = app.firestore()
-        this.auth = app.auth()
-        const settings = { timestampsInSnapshots: true }
-        this.db.settings(settings)
+        firebase.initializeApp(config)
+        this.db = firebase.firestore()
+        this.auth = firebase.auth()
+    }
+
+    doLogin = () => {
+        console.log('Logging in')
+    }
+
+    doUploadImage = () => {
+        console.log('Uploading image')
+    }
+
+    doDeleteImage = () => {
+        console.log('Deleting image')
     }
 }
 
-const FirebaseContext = React.createContext(null)
-
-export const withFirebase = Component => props => (
-    <FirebaseContext.Consumer>{firebase => <Component {...props} firebase={firebase} />}</FirebaseContext.Consumer>
-)
+export const FirebaseContext = React.createContext({} as Firebase)
 
 export const useFirebase = () => useContext(FirebaseContext)
-
-export default FirebaseContext
