@@ -5,22 +5,31 @@ import '../styles/Login.scss'
 type LoginProps = {}
 
 export const Login: React.FC<LoginProps> = () => {
-    const [nameInput, setNameInput] = useState('')
+    const [mailInput, setMailInput] = useState('')
     const [passwordInput, setPasswordInput] = useState('')
 
     const firebase = useFirebase()
 
     useEffect(() => {}, [])
 
-    const handleLogin = () => {}
+    const inputIsValid = (): boolean => {
+        return mailInput.length > 0 && passwordInput.length > 0
+    }
+
+    const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        if (inputIsValid()) {
+            firebase.doSignInWithEmailAndPassword(mailInput, passwordInput).then(console.log).catch(console.error)
+        }
+    }
 
     return (
-        <div className="login">
+        <form className="login">
             <input
                 type="text"
-                placeholder="Namn"
-                value={nameInput}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNameInput(e.target.value)}
+                placeholder="Email"
+                value={mailInput}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMailInput(e.target.value)}
             />
             <input
                 type="password"
@@ -29,6 +38,6 @@ export const Login: React.FC<LoginProps> = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPasswordInput(e.target.value)}
             />
             <button onClick={handleLogin}>Logga In</button>
-        </div>
+        </form>
     )
 }

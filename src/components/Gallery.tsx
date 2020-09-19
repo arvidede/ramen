@@ -1,63 +1,7 @@
 import React, { useState } from 'react'
 import { FullScreen } from './'
+import { photos } from '../assets/'
 import '../styles/Gallery.scss'
-
-interface Photo {
-    title: string
-    path: string
-    key: number
-}
-
-const photos: Photo[] = [
-    {
-        title: 'Yum',
-        path: 'https://source.unsplash.com/random',
-        key: Math.random(),
-    },
-    { title: 'Yum', path: require('../img/ramen.jpg'), key: Math.random() },
-    {
-        title: 'Yum',
-        path: 'https://source.unsplash.com/random',
-        key: Math.random(),
-    },
-    { title: 'Yum', path: require('../img/ramen.jpg'), key: Math.random() },
-    {
-        title: 'Yum',
-        path: 'https://source.unsplash.com/random',
-        key: Math.random(),
-    },
-    { title: 'Yum', path: require('../img/ramen.jpg'), key: Math.random() },
-    {
-        title: 'Yum',
-        path: 'https://source.unsplash.com/random',
-        key: Math.random(),
-    },
-    { title: 'Yum', path: require('../img/ramen.jpg'), key: Math.random() },
-    {
-        title: 'Yum',
-        path: 'https://source.unsplash.com/random',
-        key: Math.random(),
-    },
-    { title: 'Yum', path: require('../img/ramen.jpg'), key: Math.random() },
-    {
-        title: 'Yum',
-        path: 'https://source.unsplash.com/random',
-        key: Math.random(),
-    },
-    { title: 'Yum', path: require('../img/ramen.jpg'), key: Math.random() },
-    {
-        title: 'Yum',
-        path: 'https://source.unsplash.com/random',
-        key: Math.random(),
-    },
-    { title: 'Yum', path: require('../img/ramen.jpg'), key: Math.random() },
-    {
-        title: 'Yum',
-        path: 'https://source.unsplash.com/random',
-        key: Math.random(),
-    },
-    { title: 'Yum', path: require('../img/ramen.jpg'), key: Math.random() },
-]
 
 export const Gallery: React.FC = () => {
     const [isFullScreen, setIsFullScreen] = useState(false)
