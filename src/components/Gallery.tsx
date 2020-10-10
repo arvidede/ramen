@@ -1,11 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FullScreen } from './'
-import { photos } from '../assets/'
+import { Img } from './Image'
+import { Spinner, usePhotos } from '../assets/'
 import '../styles/Gallery.scss'
+import { PhotoType } from '../assets/constants'
+import clsx from 'clsx'
+import { useFirebase } from '../assets/firebase'
 
-export const Gallery: React.FC = () => {
+interface GalleryProps {
+    photos: PhotoType[]
+}
+
+const Gallery: React.FC<GalleryProps> = ({ photos }) => {
     const [isFullScreen, setIsFullScreen] = useState(false)
     const [selectedPhoto, setSelectedPhoto] = useState<number>(-1)
+    const [hasMounted, setHasMounted] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setHasMounted(true)
+        }, 100)
+    }, [])
+
     const handleClick = (photo: number) => {
         setSelectedPhoto(selectedPhoto === photo ? -1 : photo)
         setIsFullScreen(selectedPhoto !== photo)
@@ -24,14 +40,14 @@ export const Gallery: React.FC = () => {
     }
 
     return (
-        <div>
+        <div className={clsx('gallery-wrapper', hasMounted && 'mounted')}>
             <header>
                 <h1>Ramen</h1>
             </header>
             <section className="gallery">
                 {photos.map((photo, index) => (
                     <div className="photo" key={index} onClick={() => handleClick(index)}>
-                        <img className={selectedPhoto === index ? 'selected' : ''} src={photo.path} alt="" />
+                        <Img className={selectedPhoto === index ? 'selected' : ''} src={photo.src} />
                         <h2>{photo.title}</h2>
                     </div>
                 ))}
@@ -39,7 +55,7 @@ export const Gallery: React.FC = () => {
                     onClose={handleClose}
                     onChange={handleChangePhoto}
                     show={isFullScreen}
-                    url={photo ? photo.path : ''}
+                    src={photo ? photo.src : ''}
                 />
             </section>
             <footer>
@@ -50,3 +66,11 @@ export const Gallery: React.FC = () => {
         </div>
     )
 }
+
+const GalleryWrapper: React.FC = () => {
+    const [isLoading, photos] = usePhotos()
+
+    return isLoading ? <Spinner /> : <Gallery photos={photos} />
+}
+
+export default GalleryWrapper
