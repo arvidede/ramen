@@ -4,6 +4,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
+import { error } from 'console'
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -27,18 +28,31 @@ export class Firebase {
 
     doUploadImage = async (file: File) => {
         const fileRef = this.storage.ref()
-        const uploadTask = fileRef
+
+        if (file.name.includes('.heic'))
+            return {
+                status: 'error',
+                error: 'The provided file was in the wrong format. Please use .jpg, .jpeg or .png.',
+            }
+
+        return fileRef
             .child(`images/${file.name}`)
             .put(file)
             .then((snapshot: any) => {
-                snapshot.ref.getDownloadURL().then((imageURL: string) => {
-                    this.db.collection('images').add({
-                        name: file.name,
-                        url: imageURL,
-                        place: 'Restaurant',
-                        location: 'https://goo.gl/maps/DMcXyNf6BDG5EcEh7',
+                snapshot.ref
+                    .getDownloadURL()
+                    .then((imageURL: string) => {
+                        this.db.collection('images').add({
+                            name: file.name,
+                            src: imageURL,
+                            place: 'Restaurant',
+                            location: 'https://goo.gl/maps/DMcXyNf6BDG5EcEh7',
+                        })
                     })
-                })
+                    .then(() => ({
+                        status: 'ok',
+                    }))
+                    .catch((error: string) => ({ status: 'error', error }))
             })
     }
 

@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import { useFirebase } from '../assets/'
+import '../styles/Upload.scss'
 
 export const Upload: React.FC = () => {
     const fileRef = useRef<HTMLInputElement>(null)
@@ -13,26 +14,20 @@ export const Upload: React.FC = () => {
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         if (fileRef.current != null && fileRef.current.files) {
-            const file = fileRef.current.files[0]
-            firebase.doUploadImage(file)
+            Array.from(fileRef.current.files).forEach(file => firebase.doUploadImage(file))
         }
     }
 
-    useEffect(() => {
-        firebase.doGetImages().then((querySnapshot: any) => {
-            console.log(querySnapshot.docs)
-        })
-    }, [])
     return (
-        <div>
+        <div className="upload-wrapper">
             <form>
                 <div>
                     <label htmlFor="">Restaurang</label>
-                    <input type="text" />
+                    <input type="text" placeholder="Var åt du?" />
                 </div>
                 <div>
                     <label htmlFor="">Plats</label>
-                    <input type="text" />
+                    <input type="text" placeholder="Hur hittar jag dit?" />
                 </div>
                 <div>
                     <label htmlFor="" />
