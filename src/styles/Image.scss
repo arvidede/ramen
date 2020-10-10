@@ -1,0 +1,11 @@
+.img {
+    transition: ease 10s;
+    transition-delay: 2s;
+    filter: blur(2px);
+    opacity: 0.8;
+
+    &.loaded {
+        filter: blur(0);
+        opacity: 1;
+    }
+}
