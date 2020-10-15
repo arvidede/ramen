@@ -48,7 +48,7 @@ const Gallery: React.FC<GalleryProps> = ({ photos }) => {
                 {photos.map((photo, index) => (
                     <div className="photo" key={index} onClick={() => handleClick(index)}>
                         <Img className={selectedPhoto === index ? 'selected' : ''} src={photo.src} />
-                        <h2>{photo.title}</h2>
+                        <h2>{photo.place}</h2>
                     </div>
                 ))}
                 <FullScreen
@@ -69,7 +69,7 @@ const Gallery: React.FC<GalleryProps> = ({ photos }) => {
 
 const GalleryWrapper: React.FC = () => {
     const [isLoading, photos] = usePhotos()
-
+    console.log(photos)
     return isLoading ? <Spinner /> : <Gallery photos={photos} />
 }
 

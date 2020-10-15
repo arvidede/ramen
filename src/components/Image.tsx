@@ -3,7 +3,8 @@ import { PhotoType } from '../assets/constants'
 import clsx from 'clsx'
 import '../styles/Image.scss'
 
-interface ImgProps extends PhotoType {
+interface ImgProps {
+    src: string
     className: string
 }
 
