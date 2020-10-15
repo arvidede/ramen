@@ -1,5 +1,6 @@
 export interface PhotoType {
-    title?: string
+    location: string
+    name: string
+    place: string
     src: string
-    key?: number
 }
