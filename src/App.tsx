@@ -19,19 +19,17 @@ TODO:
 
 const App: React.FC = () => {
     return (
-        <div className="App">
-            <Router basename={process.env.PUBLIC_URL}>
-                <Switch>
-                    <Route path={ROUTES.ADMIN} exact component={Admin} />
-                    <Route path={ROUTES.GALLERY} exact component={Gallery} />
-                    <Route>
-                        <div>
-                            <p>404</p>
-                        </div>
-                    </Route>
-                </Switch>
-            </Router>
-        </div>
+        <Router basename={process.env.PUBLIC_URL}>
+            <Switch>
+                <Route path={ROUTES.ADMIN} exact component={Admin} />
+                <Route path={ROUTES.GALLERY} exact component={Gallery} />
+                <Route>
+                    <div>
+                        <p>404</p>
+                    </div>
+                </Route>
+            </Switch>
+        </Router>
     )
 }
 
