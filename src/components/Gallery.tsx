@@ -5,7 +5,6 @@ import { Spinner, usePhotos } from '../assets/'
 import '../styles/Gallery.scss'
 import { PhotoType } from '../assets/constants'
 import clsx from 'clsx'
-import { useFirebase } from '../assets/firebase'
 
 interface GalleryProps {
     photos: PhotoType[]
@@ -60,7 +59,11 @@ const Gallery: React.FC<GalleryProps> = ({ photos }) => {
             </section>
             <footer>
                 <p>
-                    Powered with 💜 by <a href="https://edenheim.se">Arvid</a>
+                    Powered with{' '}
+                    <span role="img" aria-label="">
+                        💜
+                    </span>{' '}
+                    by <a href="https://edenheim.se">Arvid</a>
                 </p>
             </footer>
         </div>
@@ -69,7 +72,6 @@ const Gallery: React.FC<GalleryProps> = ({ photos }) => {
 
 const GalleryWrapper: React.FC = () => {
     const [isLoading, photos] = usePhotos()
-    console.log(photos)
     return isLoading ? <Spinner /> : <Gallery photos={photos} />
 }
 

@@ -3,7 +3,6 @@ import { useFirebase } from '../assets/'
 import { Upload, Login } from './'
 
 export const Admin: React.FC = () => {
-    const [isLoading, setIsLoading] = useState(true)
     const [authUser, setAuthUser] = useState<null | string>(null)
     const firebase = useFirebase()
 
@@ -16,7 +15,6 @@ export const Admin: React.FC = () => {
             (authUser: any) => {
                 localStorage.setItem('authUser', JSON.stringify(authUser))
                 setAuthUser(authUser)
-                setIsLoading(false)
             },
             () => {
                 localStorage.removeItem('authUser')
@@ -25,6 +23,6 @@ export const Admin: React.FC = () => {
         )
 
         return listener
-    }, [])
+    }, [firebase])
     return <>{authUser ? <Upload /> : <Login />}</>
 }

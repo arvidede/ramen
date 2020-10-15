@@ -1,12 +1,11 @@
 import React, { useContext } from 'react'
-
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
-import { error } from 'console'
+import { GOOGLE_PLACES_BASE_URL, SearchResult } from './constants';
 
-const config = {
+const prodConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
     databaseURL: process.env.REACT_APP_DATABASE_URL,
@@ -15,18 +14,33 @@ const config = {
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 }
 
+const devConfig = {
+    apiKey: process.env.REACT_APP_API_KEY_DEV,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN_DEV,
+    databaseURL: process.env.REACT_APP_DATABASE_URL_DEV,
+    projectId: process.env.REACT_APP_PROJECT_ID_DEV,
+    storageBucket: process.env.REACT_APP_STORAGE_BUCKET_DEV,
+    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID_DEV,
+}
+
+const config =  process.env.NODE_ENV === 'production' ? prodConfig : devConfig
+
 export class Firebase {
     db: any
     auth: any
     storage: any
+    url: string
     constructor() {
+        const env = process.env.NODE_ENV === 'production' ? 'production' : 'dev'
+        console.log('Initializing firebase in ' + env + ' environment')
         firebase.initializeApp(config)
         this.db = firebase.firestore()
         this.auth = firebase.auth()
         this.storage = firebase.storage()
+        this.url = GOOGLE_PLACES_BASE_URL
     }
 
-    doUploadImage = async (file: File) => {
+    doUploadImage = async (file: File, place: string, location: string) => {
         const fileRef = this.storage.ref()
 
         if (file.name.includes('.heic'))
@@ -45,8 +59,8 @@ export class Firebase {
                         this.db.collection('images').add({
                             name: file.name,
                             src: imageURL,
-                            place: 'Restaurant',
-                            location: 'https://goo.gl/maps/DMcXyNf6BDG5EcEh7',
+                            place,
+                            location
                         })
                     })
                     .then(() => ({
@@ -55,6 +69,8 @@ export class Firebase {
                     .catch((error: string) => ({ status: 'error', error }))
             })
     }
+
+    doSearchForPlace = (input: string): Promise<SearchResult> => fetch(`${this.url}${input}`).then(res => res.json()).catch(console.error)
 
     doDeleteImage = () => {
         console.log('Deleting image')

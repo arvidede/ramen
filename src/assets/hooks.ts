@@ -13,7 +13,22 @@ export const usePhotos = (): [boolean, PhotoType[]] => {
             setIsLoading(false)
             setPhotos(data)
         })
-    }, [])
-    console.log(photos)
+    }, [firebase])
     return [isLoading, photos]
+}
+
+export const useDebouncedInput = (value: string, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(
+    () => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+      return () => {
+        clearTimeout(handler);
+      };
+    },
+    [value, delay] 
+  );
+  return debouncedValue;
 }

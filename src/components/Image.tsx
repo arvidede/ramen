@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { PhotoType } from '../assets/constants'
 import clsx from 'clsx'
 import '../styles/Image.scss'
 
@@ -21,5 +20,5 @@ export const Img: React.FC<ImgProps> = ({ src, className }) => {
 
     const name = clsx(className, 'img', loadedSrc !== '' && 'loaded')
 
-    return loadedSrc === '' ? <img className={name} /> : <img src={loadedSrc} alt="" className={name} />
+    return loadedSrc === '' ? <img className={name} alt="" /> : <img src={loadedSrc} alt="" className={name} />
 }
