@@ -3,10 +3,12 @@ $bp-m: 900px;
 $bp-l: 1250px;
 
 html,
-body {
+body,
+#root {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    height: 100%;
 }
 
 header {
@@ -24,6 +26,9 @@ header {
     opacity: 0;
     transition: ease 1s;
     transform: translateY(20px);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
     &.mounted {
         opacity: 1;
@@ -32,6 +37,7 @@ header {
 }
 
 .gallery {
+    flex: 1 1 0%;
     width: 100%;
     padding: 0 4rem 3rem 4rem;
     grid-gap: 1rem;
