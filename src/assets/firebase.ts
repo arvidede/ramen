@@ -5,7 +5,7 @@ import 'firebase/firestore'
 import 'firebase/storage'
 import { GOOGLE_PLACES_BASE_URL, SearchResult } from './constants';
 
-const prodConfig = {
+const config = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
     databaseURL: process.env.REACT_APP_DATABASE_URL,
@@ -13,17 +13,6 @@ const prodConfig = {
     storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 }
-
-const devConfig = {
-    apiKey: process.env.REACT_APP_API_KEY_DEV,
-    authDomain: process.env.REACT_APP_AUTH_DOMAIN_DEV,
-    databaseURL: process.env.REACT_APP_DATABASE_URL_DEV,
-    projectId: process.env.REACT_APP_PROJECT_ID_DEV,
-    storageBucket: process.env.REACT_APP_STORAGE_BUCKET_DEV,
-    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID_DEV,
-}
-
-const config =  process.env.NODE_ENV === 'production' ? prodConfig : devConfig
 
 export class Firebase {
     db: any
@@ -33,6 +22,7 @@ export class Firebase {
     constructor() {
         const env = process.env.NODE_ENV === 'production' ? 'production' : 'dev'
         console.log('Initializing firebase in ' + env + ' environment')
+        console.log(process.env.REACT_APP_AUTH_DOMAIN)
         firebase.initializeApp(config)
         this.db = firebase.firestore()
         this.auth = firebase.auth()
