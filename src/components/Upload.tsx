@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Prediction, SearchResult, useFirebase } from '../assets/'
-import '../styles/Upload.scss'
+import { Prediction, useFirebase } from '../assets/'
+import { Select, Option } from './Select'
 import { useDebouncedInput } from '../assets/hooks'
+import '../styles/Upload.scss'
 
 const INITIAL_INPUT = {
     place: '',
@@ -11,44 +12,76 @@ const INITIAL_INPUT = {
 export const Upload: React.FC = () => {
     const fileRef = useRef<HTMLInputElement>(null)
     const [input, setInput] = useState(INITIAL_INPUT)
-    const [searchResults, setSearchResults] = useState<Prediction[]>([])
     const firebase = useFirebase()
+    const debouncedInput = useDebouncedInput(input.location, 250)
+    const [searchResults, setSearchResults] = useState<Option[]>([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [selectedOption, setSelectedOption] = useState<Option>({} as Option)
 
-    const debouncedInput = useDebouncedInput(input.location, 500)
-
-    useEffect(() => {
-        if (debouncedInput) {
-            firebase.doSearchForPlace(debouncedInput).then(res => {
-                if (res.status === 'OK') {
-                    setSearchResults(res.predictions)
-                }
-            })
-        } else {
-            setSearchResults([])
-        }
-    }, [debouncedInput])
+    const handleSelectOption = (option: Option) => {
+        setSelectedOption(option)
+        setInput({ place: option.misc || '', location: option.label })
+        setIsLoading(false)
+    }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setInput({ ...input, [name]: value })
     }
 
-    const inputIsValid = () => input.location !== '' && input.place !== ''
+    const inputIsValid = () => input.place !== ''
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         if (inputIsValid() && fileRef.current != null && fileRef.current.files) {
-            Array.from(fileRef.current.files).forEach(file => firebase.doUploadImage(file, input.place, input.location))
+            Array.from(fileRef.current.files).forEach(file =>
+                firebase.doUploadImage(file, input.place, selectedOption?.id),
+            )
             fileRef.current.files = null
             fileRef.current.value = ''
             setInput(INITIAL_INPUT)
         }
     }
 
+    useEffect(() => {
+        // Prevent search when an option is selected
+        if (debouncedInput && input.location !== selectedOption.label) {
+            firebase.doSearchForPlace(debouncedInput).then(res => {
+                if (res.status === 'OK') {
+                    const options = res.predictions.map(p => ({
+                        id: p.place_id,
+                        label: p.description,
+                        misc: p.structured_formatting.main_text,
+                    })) as Option[]
+                    setSearchResults(options)
+                }
+                setIsLoading(false)
+            })
+        }
+    }, [debouncedInput, firebase])
+
+    useEffect(() => {
+        if (input.location.length > 0 && !isLoading) setIsLoading(true)
+    }, [input.location])
+
     return (
         <div className="upload-wrapper">
             <form>
-                <div>
+                <div className="select">
+                    <label htmlFor="">Plats</label>
+                    <Select
+                        name="location"
+                        value={input.location}
+                        isLoading={isLoading}
+                        options={searchResults}
+                        onSelect={handleSelectOption}
+                        onChange={handleInputChange}
+                        noOptionsPlaceholder="Nope, inget här"
+                        loadingPlaceholder="Laddar 🍜"
+                        inputPlaceholder="Sök efter nudlarna"
+                    />
+                </div>
+                <div className="form-input">
                     <label htmlFor="">Restaurang</label>
                     <input
                         type="text"
@@ -59,27 +92,13 @@ export const Upload: React.FC = () => {
                         onChange={handleInputChange}
                     />
                 </div>
-                <div>
-                    <label htmlFor="">Plats</label>
-                    <input
-                        type="text"
-                        required
-                        placeholder="Hur hittar jag dit?"
-                        name="location"
-                        onChange={handleInputChange}
-                        value={input.location}
-                    />
-                    <ul>
-                        {searchResults.map(s => (
-                            <li key={s.place_id}>{s.description}</li>
-                        ))}
-                    </ul>
-                </div>
-                <div>
+                <div className="form-input">
                     <label htmlFor="" />
                     <input ref={fileRef} type="file" multiple />
                 </div>
-                <button onClick={handleSubmit}>Skicka</button>
+                <button className="form-button" onClick={handleSubmit}>
+                    Skicka
+                </button>
             </form>
             <button onClick={firebase.doSignOut}>Logga ut</button>
         </div>

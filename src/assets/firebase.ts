@@ -3,7 +3,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
-import { GOOGLE_PLACES_BASE_URL, SearchResult } from './constants';
+import { SearchResult, GOOGLE_PLACES_BASE_URL, GOOGLE_MAPS_BASE_URL } from './constants';
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -18,7 +18,6 @@ export class Firebase {
     db: any
     auth: any
     storage: any
-    url: string
     constructor() {
         const env = process.env.NODE_ENV === 'production' ? 'production' : 'dev'
         console.log('Initializing firebase in ' + env + ' environment')
@@ -27,10 +26,9 @@ export class Firebase {
         this.db = firebase.firestore()
         this.auth = firebase.auth()
         this.storage = firebase.storage()
-        this.url = GOOGLE_PLACES_BASE_URL
     }
 
-    doUploadImage = async (file: File, place: string, location: string) => {
+    doUploadImage = async (file: File, place: string, placeId: string) => {
         const fileRef = this.storage.ref()
 
         if (file.name.includes('.heic'))
@@ -47,10 +45,9 @@ export class Firebase {
                     .getDownloadURL()
                     .then((imageURL: string) => {
                         this.db.collection('images').add({
-                            name: file.name,
                             src: imageURL,
                             place,
-                            location
+                            location: placeId ? `${GOOGLE_MAPS_BASE_URL}${placeId}` : null
                         })
                     })
                     .then(() => ({
@@ -60,7 +57,7 @@ export class Firebase {
             })
     }
 
-    doSearchForPlace = (input: string): Promise<SearchResult> => fetch(`${this.url}${input}`).then(res => res.json()).catch(console.error)
+    doSearchForPlace = (input: string): Promise<SearchResult> => fetch(`${GOOGLE_PLACES_BASE_URL}${input}`).then(res => res.json()).catch(console.error)
 
     doDeleteImage = () => {
         console.log('Deleting image')

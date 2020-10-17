@@ -11,23 +11,37 @@
         align-items: center;
         justify-content: center;
 
-        div,
-        button {
+        .form-input,
+        .form-button {
             width: 100%;
             margin: 0.5rem 0;
         }
 
-        div {
+        .form-input {
             display: flex;
             flex-direction: column;
+            input[type='text'] {
+                padding: 0.5rem;
+            }
+        }
+
+        .select {
+            width: 100%;
         }
 
         input[type='text'] {
-            padding: 0.5rem;
+            margin-top: 0.5rem;
         }
     }
 
     button {
         padding: 1rem;
+    }
+
+    @media screen and (max-width: 768px) {
+        input,
+        li {
+            font-size: 0.7rem;
+        }
     }
 }
