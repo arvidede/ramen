@@ -69,6 +69,8 @@ const Gallery: React.FC<GalleryProps> = ({ photos }) => {
                 onChange={handleChangePhoto}
                 show={isFullScreen}
                 src={photo ? photo.src : ''}
+                location={photo?.location}
+                place={photo?.place}
             />
         </>
     )

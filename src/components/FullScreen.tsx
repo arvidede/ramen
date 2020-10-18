@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Close, Next, Previous } from '../assets/'
 import '../styles/Fullscreen.scss'
+import clsx from 'clsx'
 
 const TRANSITION_TIMEOUT = 300
 
@@ -9,9 +10,18 @@ interface FullScreenProps {
     show: boolean
     onClose: () => void
     onChange: (direction: boolean) => void
+    location: string
+    place: string
 }
 
-export const FullScreen: React.FC<FullScreenProps> = ({ src, show, onClose, onChange }) => {
+export const FullScreen: React.FC<FullScreenProps> = ({
+    src,
+    show,
+    onClose,
+    onChange,
+    location,
+    place,
+}) => {
     const [isEntering, setIsEntering] = useState(false)
     const [isLeaving, setIsLeaving] = useState(false)
 
@@ -59,7 +69,7 @@ export const FullScreen: React.FC<FullScreenProps> = ({ src, show, onClose, onCh
 
     return (
         <div className={className}>
-            <img src={src} className={className} alt="" />
+            <img src={src} alt="" />
             <div className="fullscreen-bg" onClick={handleClose} />
             <button className="previous" onClick={() => onChange(true)}>
                 <Previous />
@@ -70,6 +80,9 @@ export const FullScreen: React.FC<FullScreenProps> = ({ src, show, onClose, onCh
             <button className="next" onClick={() => onChange(false)}>
                 <Next />
             </button>
+            <div className="bottom-info">
+                <a href={location}>{place}</a>
+            </div>
         </div>
     )
 }

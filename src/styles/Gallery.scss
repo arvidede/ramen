@@ -46,14 +46,16 @@ header {
     display: grid;
     box-sizing: border-box;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    grid-template-rows: auto;
+    grid-template-rows: 35vh;
 
     @media screen and (min-width: $bp-s) and (max-width: $bp-m) {
         padding: 0 2rem 2rem 2rem;
+        grid-template-rows: 40vh;
     }
 
     @media screen and (max-width: $bp-s) {
         grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+        grid-template-rows: 40vh;
         padding: 0 1rem 1.5rem 1rem;
     }
 }
