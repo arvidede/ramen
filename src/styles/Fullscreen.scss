@@ -8,6 +8,8 @@ $bp-l: 1250px;
     left: 0;
     right: 0;
     height: 100vh;
+    box-sizing: border-box;
+    padding-bottom: 7rem;
     width: 100vw;
     transition: ease 350ms;
 
@@ -35,7 +37,6 @@ $bp-l: 1250px;
         left: 0;
         right: 0;
         top: 0;
-        bottom: 0;
         height: 100%;
         object-fit: cover;
         width: auto;
@@ -51,6 +52,7 @@ $bp-l: 1250px;
             height: auto;
             min-height: 50vh;
             width: 100%;
+            bottom: 7rem;
         }
     }
 
@@ -77,7 +79,7 @@ $bp-l: 1250px;
 
     .bottom-info {
         position: absolute;
-        bottom: 0;
+        bottom: 0rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -90,10 +92,11 @@ $bp-l: 1250px;
             font-size: 1.5rem;
             text-decoration: none;
             color: #fff;
+        }
 
-            @media screen and (max-width: $bp-s) {
-                font-size: 1.75rem;
-            }
+        @media screen and (max-width: $bp-s) {
+            bottom: 6rem;
+            font-size: 1.75rem;
         }
     }
 }
