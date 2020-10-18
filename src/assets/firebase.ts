@@ -3,7 +3,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
-import { SearchResult, GOOGLE_PLACES_BASE_URL, GOOGLE_MAPS_BASE_URL } from './constants';
+import { SearchResult, GOOGLE_PLACES_BASE_URL, GOOGLE_MAPS_BASE_URL } from './constants'
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -19,9 +19,10 @@ export class Firebase {
     auth: any
     storage: any
     constructor() {
-        const env = process.env.NODE_ENV === 'production' ? 'production' : 'dev'
-        console.log('Initializing firebase in ' + env + ' environment')
-        console.log(process.env.REACT_APP_AUTH_DOMAIN)
+        if (process.env.NODE_ENV === 'production') {
+            console.log('Initializing firebase in env environment')
+            console.log(process.env.REACT_APP_AUTH_DOMAIN)
+        }
         firebase.initializeApp(config)
         this.db = firebase.firestore()
         this.auth = firebase.auth()
@@ -47,7 +48,7 @@ export class Firebase {
                         this.db.collection('images').add({
                             src: imageURL,
                             place,
-                            location: placeId ? `${GOOGLE_MAPS_BASE_URL}${placeId}` : null
+                            location: placeId ? `${GOOGLE_MAPS_BASE_URL}${placeId}` : null,
                         })
                     })
                     .then(() => ({
@@ -57,7 +58,10 @@ export class Firebase {
             })
     }
 
-    doSearchForPlace = (input: string): Promise<SearchResult> => fetch(`${GOOGLE_PLACES_BASE_URL}${input}`).then(res => res.json()).catch(console.error)
+    doSearchForPlace = (input: string): Promise<SearchResult> =>
+        fetch(`${GOOGLE_PLACES_BASE_URL}${input}`)
+            .then(res => res.json())
+            .catch(console.error)
 
     doDeleteImage = () => {
         console.log('Deleting image')

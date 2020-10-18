@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Close, Next, Previous } from '../assets/'
 import '../styles/Fullscreen.scss'
 
@@ -24,13 +24,13 @@ export const FullScreen: React.FC<FullScreenProps> = ({ src, show, onClose, onCh
         }
     }, [show])
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setIsLeaving(true)
         setTimeout(() => {
             onClose()
             setIsLeaving(false)
         }, TRANSITION_TIMEOUT)
-    }
+    }, [onClose])
 
     useEffect(() => {
         const handleKeyPress = (event: KeyboardEvent) => {
@@ -50,7 +50,7 @@ export const FullScreen: React.FC<FullScreenProps> = ({ src, show, onClose, onCh
         }
         document.addEventListener('keydown', handleKeyPress)
         return () => document.removeEventListener('keydown', handleKeyPress)
-    }, [onChange])
+    }, [onChange, handleClose])
 
     const className =
         'fullscreen' +
@@ -59,7 +59,7 @@ export const FullScreen: React.FC<FullScreenProps> = ({ src, show, onClose, onCh
 
     return (
         <div className={className}>
-            <img src={src} className={className} />
+            <img src={src} className={className} alt="" />
             <div className="fullscreen-bg" onClick={handleClose} />
             <button className="previous" onClick={() => onChange(true)}>
                 <Previous />
