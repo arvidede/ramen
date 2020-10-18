@@ -20,7 +20,7 @@ export class Firebase {
     storage: any
     constructor() {
         if (process.env.NODE_ENV === 'development') {
-            console.log('Initializing firebase in env environment')
+            console.log('Initializing firebase in dev environment')
             console.log(process.env.REACT_APP_AUTH_DOMAIN)
         }
         firebase.initializeApp(config)
