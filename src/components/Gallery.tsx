@@ -39,34 +39,38 @@ const Gallery: React.FC<GalleryProps> = ({ photos }) => {
     }
 
     return (
-        <div className={clsx('gallery-wrapper', hasMounted && 'mounted')}>
-            <header>
-                <h1>Ramen</h1>
-            </header>
-            <section className="gallery">
-                {photos.map((photo, index) => (
-                    <div className="photo" key={index} onClick={() => handleClick(index)}>
-                        <Img className={selectedPhoto === index ? 'selected' : ''} src={photo.src} />
-                        <h2>{photo.place}</h2>
-                    </div>
-                ))}
-                <FullScreen
-                    onClose={handleClose}
-                    onChange={handleChangePhoto}
-                    show={isFullScreen}
-                    src={photo ? photo.src : ''}
-                />
-            </section>
-            <footer>
-                <p>
-                    Powered with{' '}
-                    <span role="img" aria-label="">
-                        💜
-                    </span>{' '}
-                    by <a href="https://edenheim.se">Arvid</a>
-                </p>
-            </footer>
-        </div>
+        <>
+            <div className={clsx('gallery-wrapper', hasMounted && 'mounted')}>
+                <header>
+                    <h1>Ramen</h1>
+                </header>
+                <section className="gallery">
+                    {photos.map((photo, index) => (
+                        <Img
+                            key={index}
+                            onClick={() => handleClick(index)}
+                            className={selectedPhoto === index ? 'selected' : ''}
+                            photo={photo}
+                        />
+                    ))}
+                </section>
+                <footer>
+                    <p>
+                        Powered with{' '}
+                        <span role="img" aria-label="">
+                            💜
+                        </span>{' '}
+                        by <a href="https://edenheim.se">Arvid</a>
+                    </p>
+                </footer>
+            </div>
+            <FullScreen
+                onClose={handleClose}
+                onChange={handleChangePhoto}
+                show={isFullScreen}
+                src={photo ? photo.src : ''}
+            />
+        </>
     )
 }
 

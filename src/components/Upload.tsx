@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Prediction, useFirebase } from '../assets/'
+import { useFirebase } from '../assets/'
 import { Select, Option } from './Select'
 import { useDebouncedInput } from '../assets/hooks'
 import '../styles/Upload.scss'
