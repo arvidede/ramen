@@ -63,7 +63,7 @@ export const Close: React.FC = () => (
                 fill: 'none',
                 strokeLinecap: 'round',
                 strokeLinejoin: 'round',
-                strokeWidth: '48px',
+                strokeWidth: '32px',
             }}
         />
         <line
