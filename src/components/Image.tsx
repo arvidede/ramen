@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import clsx from 'clsx'
 import '../styles/Image.scss'
 import { PhotoType } from '../assets/constants'
+import { isMobile } from '../assets/helpers'
 
 interface ImgProps {
     photo: PhotoType
@@ -28,13 +29,15 @@ export const Img: React.FC<ImgProps> = ({ photo, className, onClick }) => {
 
         const image = imageRef.current
 
-        // image?.addEventListener('touchstart', handleTouchStart, false)
-        image?.addEventListener('touchend', handleTouchEnd)
-        image?.addEventListener('touchmove', handleTouchStart)
-        return () => {
-            // image?.removeEventListener('touchstart', handleTouchStart)
-            image?.removeEventListener('touchend', handleTouchEnd)
-            image?.removeEventListener('touchmove', handleTouchStart)
+        if (isMobile()) {
+            // image?.addEventListener('touchstart', handleTouchStart, false)
+            image?.addEventListener('touchend', handleTouchEnd)
+            image?.addEventListener('touchmove', handleTouchStart)
+            return () => {
+                // image?.removeEventListener('touchstart', handleTouchStart)
+                image?.removeEventListener('touchend', handleTouchEnd)
+                image?.removeEventListener('touchmove', handleTouchStart)
+            }
         }
     }, [])
 
