@@ -24,13 +24,10 @@ export const Img: React.FC<ImgProps> = ({ photo, className, onClick }) => {
     }, [photo.src])
 
     useEffect(() => {
-        const handleTouchStart = () => setMobileTouchDetected(true)
-        const handleTouchEnd = () => setMobileTouchDetected(false)
-
-        const image = imageRef.current
-
         if (isMobile()) {
-            // image?.addEventListener('touchstart', handleTouchStart, false)
+            const handleTouchStart = () => setMobileTouchDetected(true)
+            const handleTouchEnd = () => setMobileTouchDetected(false)
+            const image = imageRef.current
             image?.addEventListener('touchend', handleTouchEnd)
             image?.addEventListener('touchmove', handleTouchStart)
             return () => {
