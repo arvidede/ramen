@@ -8,7 +8,7 @@ import './styles/App.scss'
 TODO:
 - [x] Login interface
 - [x] Admin interface to upload photos
-- [] Upload multiple photos
+- [x] Upload multiple photos
 - [x] Load photos from firebase storage
 - [x] Fetch url and metadata from firestore
 - [] Compress image during upload to enable faster loading of gallery view
