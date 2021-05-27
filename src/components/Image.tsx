@@ -47,9 +47,9 @@ export const Img: React.FC<ImgProps> = ({ photo, className, onClick }) => {
             ref={imageRef}
         >
             {loadedSrc === '' ? (
-                <img className={name} alt="" />
+                <img className={name} alt="" loading="lazy" />
             ) : (
-                <img src={loadedSrc} alt="" className={name} />
+                <img src={loadedSrc} alt="" className={name} loading="lazy" />
             )}
             <h2>{photo.place}</h2>
         </div>

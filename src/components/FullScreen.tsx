@@ -69,7 +69,7 @@ export const FullScreen: React.FC<FullScreenProps> = ({
 
     return (
         <div className={className}>
-            <img src={src} alt="" />
+            {src && <img src={src} alt="" loading="lazy" />}
             <div className="fullscreen-bg" onClick={handleClose} />
             <button className="previous" onClick={() => onChange(true)}>
                 <Previous />
