@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useEffect, useState } from 'react'
+import { RefObject, useCallback, useEffect, useMemo, useState } from 'react'
 import { PhotoType } from './constants'
 import { useFirebase } from './firebase'
 
@@ -33,13 +33,20 @@ export const useDebouncedInput = (value: string, delay: number) => {
     return debouncedValue
 }
 
-export const useIntersectionObserver = (target: RefObject<Element>, next: () => void) => {
-    const [observer, setObserver] = useState<IntersectionObserver>()
+const DEFAULT_OPTIONS = {
+    rootMargin: '100px',
+    threshold: 0.1,
+}
 
+export const useIntersectionObserver = (
+    target: RefObject<Element>,
+    next: () => void,
+    observerOptions: IntersectionObserverInit = DEFAULT_OPTIONS,
+) => {
     const handleObserverUpdate: IntersectionObserverCallback = useCallback(
         (entries, observer) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting && target.current) {
+                if (target.current && entry.target === target.current && entry.isIntersecting) {
                     observer.unobserve(target.current)
                     next()
                 }
@@ -48,23 +55,24 @@ export const useIntersectionObserver = (target: RefObject<Element>, next: () => 
         [next, target],
     )
 
+    const observer = useMemo(
+        () => new IntersectionObserver(handleObserverUpdate, observerOptions),
+        [handleObserverUpdate],
+    )
+
     useEffect(() => {
-        if (target.current) {
-            const el = target.current
-            const observerOptions = {
-                rootMargin: '100px',
-                threshold: 0.1,
-            }
-
-            const observer = new IntersectionObserver(handleObserverUpdate, observerOptions)
-            observer.observe(el)
-
-            setObserver(observer)
-            return () => {
-                observer.disconnect()
-            }
+        return () => {
+            observer.disconnect()
         }
-    }, [target, handleObserverUpdate])
+    }, [observer])
+
+    useEffect(() => {
+        if (observer && target.current) {
+            const el = target.current
+            observer.observe(el)
+            return () => observer.unobserve(el)
+        }
+    }, [observer, target])
 
     return observer
 }
