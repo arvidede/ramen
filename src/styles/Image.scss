@@ -63,14 +63,20 @@
     // }
 }
 
-.img {
-    transition: ease 10s;
-    transition-delay: 2s;
-    filter: blur(2px);
-    opacity: 0.8;
-
+.image {
     &.loaded {
-        filter: blur(0);
+        animation: blur 1s ease 0s 1 forwards;
+    }
+}
+
+@keyframes blur {
+    from {
+        opacity: 0;
+        filter: blur(1px);
+    }
+
+    to {
         opacity: 1;
+        filter: none;
     }
 }

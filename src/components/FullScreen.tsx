@@ -62,10 +62,13 @@ export const FullScreen: React.FC<FullScreenProps> = ({
         return () => document.removeEventListener('keydown', handleKeyPress)
     }, [onChange, handleClose])
 
-    const className =
-        'fullscreen' +
-        (isEntering ? ' enter' : '') +
-        (show ? ' show' : isLeaving ? ' show leave' : ' hide')
+    const className = clsx({
+        fullscreen: true,
+        enter: isEntering,
+        show: show,
+        leave: show && isLeaving,
+        hide: !show,
+    })
 
     return (
         <div className={className}>

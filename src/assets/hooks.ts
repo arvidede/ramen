@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { RefObject, useCallback, useEffect, useState } from 'react'
 import { PhotoType } from './constants'
 import { useFirebase } from './firebase'
 
@@ -31,4 +31,40 @@ export const useDebouncedInput = (value: string, delay: number) => {
         }
     }, [value, delay])
     return debouncedValue
+}
+
+export const useIntersectionObserver = (target: RefObject<Element>, next: () => void) => {
+    const [observer, setObserver] = useState<IntersectionObserver>()
+
+    const handleObserverUpdate: IntersectionObserverCallback = useCallback(
+        (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && target.current) {
+                    observer.unobserve(target.current)
+                    next()
+                }
+            })
+        },
+        [next, target],
+    )
+
+    useEffect(() => {
+        if (target.current) {
+            const el = target.current
+            const observerOptions = {
+                rootMargin: '100px',
+                threshold: 0.1,
+            }
+
+            const observer = new IntersectionObserver(handleObserverUpdate, observerOptions)
+            observer.observe(el)
+
+            setObserver(observer)
+            return () => {
+                observer.disconnect()
+            }
+        }
+    }, [target, handleObserverUpdate])
+
+    return observer
 }

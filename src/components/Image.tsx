@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import clsx from 'clsx'
 import '../styles/Image.scss'
 import { PhotoType } from '../assets/constants'
 import { isMobile } from '../assets/helpers'
+import { useIntersectionObserver } from '../assets/hooks'
 
 interface ImgProps {
     photo: PhotoType
@@ -15,21 +16,23 @@ export const Img: React.FC<ImgProps> = ({ photo, className, onClick }) => {
     const imageRef = useRef<HTMLImageElement>(null)
     const [mobileTouchDetected, setMobileTouchDetected] = useState(false)
 
-    useEffect(() => {
-        const image = new Image()
-        image.onload = () => {
+    const handleIntersection = useCallback(() => {
+        const img = new Image()
+        img.onload = () => {
             setLoadedSrc(photo.src)
         }
-        image.src = photo.src
+        img.src = photo.src
     }, [photo.src])
+
+    useIntersectionObserver(imageRef, handleIntersection)
 
     useEffect(() => {
         if (isMobile()) {
             const handleTouchStart = () => setMobileTouchDetected(true)
             const handleTouchEnd = () => setMobileTouchDetected(false)
             const image = imageRef.current
-            image?.addEventListener('touchend', handleTouchEnd)
-            image?.addEventListener('touchmove', handleTouchStart)
+            image?.parentElement?.addEventListener('touchend', handleTouchEnd)
+            image?.parentElement?.addEventListener('touchmove', handleTouchStart)
             return () => {
                 // image?.removeEventListener('touchstart', handleTouchStart)
                 image?.removeEventListener('touchend', handleTouchEnd)
@@ -38,19 +41,14 @@ export const Img: React.FC<ImgProps> = ({ photo, className, onClick }) => {
         }
     }, [])
 
-    const name = clsx(className, 'img', loadedSrc !== '' && 'loaded')
-
     return (
-        <div
-            className={clsx('photo', mobileTouchDetected && 'mobile-focus')}
-            onClick={onClick}
-            ref={imageRef}
-        >
-            {loadedSrc === '' ? (
-                <img className={name} alt="" loading="lazy" />
-            ) : (
-                <img src={loadedSrc} alt="" className={name} loading="lazy" />
-            )}
+        <div className={clsx('photo', mobileTouchDetected && 'mobile-focus')} onClick={onClick}>
+            <img
+                ref={imageRef}
+                src={loadedSrc}
+                alt=""
+                className={clsx(className, 'image', !!loadedSrc && 'loaded')}
+            />
             <h2>{photo.place}</h2>
         </div>
     )
