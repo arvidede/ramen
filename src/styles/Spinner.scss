@@ -5,10 +5,15 @@
     transform: translate(-50%);
 }
 
-#textCircle {
+.textCircle {
     transform-origin: 50%;
     fill: black;
-    animation: rotate 3s infinite;
+    visibility: hidden;
+
+    &.loading {
+        visibility: visible;
+        animation: rotate 3s infinite;
+    }
 }
 
 @keyframes rotate {

@@ -4,6 +4,7 @@ import '../styles/Image.scss'
 import { PhotoType } from '../assets/constants'
 import { isMobile } from '../assets/helpers'
 import { useIntersectionObserver } from '../assets/hooks'
+import { Spinner } from '../assets'
 
 interface ImgProps {
     photo: PhotoType
@@ -12,7 +13,7 @@ interface ImgProps {
 }
 
 export const Img: React.FC<ImgProps> = ({ photo, className, onClick }) => {
-    const [loadedSrc, setLoadedSrc] = useState('')
+    const [loadedSrc, setLoadedSrc] = useState<string | undefined>(undefined)
     const imageRef = useRef<HTMLImageElement>(null)
     const [mobileTouchDetected, setMobileTouchDetected] = useState(false)
 
@@ -43,6 +44,7 @@ export const Img: React.FC<ImgProps> = ({ photo, className, onClick }) => {
 
     return (
         <div className={clsx('photo', mobileTouchDetected && 'mobile-focus')} onClick={onClick}>
+            {!loadedSrc && <Spinner spin={false} />}
             <img
                 ref={imageRef}
                 src={loadedSrc}
