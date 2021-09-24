@@ -29,7 +29,11 @@ export class Firebase {
         this.storage = firebase.storage()
     }
 
-    doUploadImage = async (file: File, place: string, placeId: string) => {
+    doUploadImage = async (
+        file: File,
+        place: string,
+        placeId: string,
+    ): Promise<{ status: 'ok' } | { status: 'error'; error: string }> => {
         const fileRef = this.storage.ref()
 
         if (file.name.includes('.heic'))

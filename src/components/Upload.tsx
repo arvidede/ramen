@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../styles/Upload.scss'
 import { useDebouncedInput, useFirebase } from '../utils/'
+import { compressImage } from '../utils/helpers'
 import { Option, Select } from './Select'
 
 const INITIAL_INPUT = {
@@ -15,6 +16,7 @@ export const Upload: React.FC = () => {
     const debouncedInput = useDebouncedInput(input.location, 250)
     const [searchResults, setSearchResults] = useState<Option[]>([])
     const [isLoading, setIsLoading] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const [selectedOption, setSelectedOption] = useState<Option>({} as Option)
 
     const handleSelectOption = (option: Option) => {
@@ -30,15 +32,29 @@ export const Upload: React.FC = () => {
 
     const inputIsValid = () => input.place !== ''
 
-    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        if (inputIsValid() && fileRef.current != null && fileRef.current.files) {
-            Array.from(fileRef.current.files).forEach(file =>
-                firebase.doUploadImage(file, input.place, selectedOption?.id),
-            )
-            fileRef.current.files = null
-            fileRef.current.value = ''
-            setInput(INITIAL_INPUT)
+        if (inputIsValid() && fileRef.current?.files) {
+            setIsSubmitting(true)
+            const uploads = await Array.from(fileRef.current.files).map(async file => {
+                const compressedImage = await compressImage(file)
+                if (compressedImage) {
+                    return await firebase.doUploadImage(
+                        compressedImage,
+                        input.place,
+                        selectedOption?.id,
+                    )
+                }
+                return false
+            })
+            Promise.all(uploads).then(() => {
+                if (fileRef.current) {
+                    fileRef.current.files = null
+                    fileRef.current.value = ''
+                }
+                setIsSubmitting(false)
+                setInput(INITIAL_INPUT)
+            })
         }
     }
 
@@ -95,8 +111,8 @@ export const Upload: React.FC = () => {
                     <label htmlFor="" />
                     <input ref={fileRef} type="file" multiple />
                 </div>
-                <button className="form-button" onClick={handleSubmit}>
-                    Skicka
+                <button className="form-button" onClick={handleSubmit} disabled={isSubmitting}>
+                    {isSubmitting ? '...' : 'Skicka'}
                 </button>
             </form>
             <button onClick={firebase.doSignOut}>Logga ut</button>

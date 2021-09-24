@@ -11,8 +11,8 @@ TODO:
 - [x] Upload multiple photos
 - [x] Load photos from firebase storage
 - [x] Fetch url and metadata from firestore
-- [] Compress image during upload to enable faster loading of gallery view
-- [] Lazyload images
+- [x] Compress image during upload to enable faster loading of gallery view
+- [x] Lazyload images
 - [] Standardized image size
 - [] Enable uploading user to crop image
 */
