@@ -1,8 +1,8 @@
 import React from 'react'
-import * as ROUTES from './assets/routes'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { Gallery, Admin } from './components'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Admin, Gallery } from './components'
 import './styles/App.scss'
+import * as ROUTES from './utils/routes'
 
 /*
 TODO:

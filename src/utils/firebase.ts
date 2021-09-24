@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
-import { SearchResult, GOOGLE_PLACES_BASE_URL, GOOGLE_MAPS_BASE_URL } from './constants'
+import { GOOGLE_MAPS_BASE_URL, GOOGLE_PLACES_BASE_URL } from './constants'
+import { SearchResult } from './types'
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -97,9 +97,5 @@ export class Firebase {
 
     user = (uid: string) => this.db.ref(`users/${uid}`)
 }
-
-export const FirebaseContext = React.createContext({} as Firebase)
-
-export const useFirebase = (): Firebase => useContext(FirebaseContext)
 
 export default Firebase

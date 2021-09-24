@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { FullScreen } from './'
-import { Img } from './Image'
-import { Spinner, usePhotos } from '../assets/'
-import '../styles/Gallery.scss'
-import { PhotoType } from '../assets/constants'
 import clsx from 'clsx'
+import React, { useEffect, useState } from 'react'
+import '../styles/Gallery.scss'
+import { usePhotos } from '../utils/'
+import { Photo } from '../utils/types'
+import { FullScreen } from './FullScreen'
+import { Img } from './Image'
+import { Spinner } from './Spinner'
 
 interface GalleryProps {
-    photos: PhotoType[]
+    photos: Photo[]
 }
 
 const Gallery: React.FC<GalleryProps> = ({ photos }) => {

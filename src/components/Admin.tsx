@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useFirebase } from '../assets/'
-import { Upload, Login } from './'
+import { useFirebase } from '../utils'
+import { Login } from './Login'
+import { Upload } from './Upload'
 
 export const Admin: React.FC = () => {
     const [authUser, setAuthUser] = useState<null | string>(null)

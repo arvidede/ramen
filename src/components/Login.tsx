@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useFirebase } from '../assets/'
 import '../styles/Login.scss'
+import { useFirebase } from '../utils/'
 
 type LoginProps = {}
 
@@ -19,7 +19,10 @@ export const Login: React.FC<LoginProps> = () => {
     const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         if (inputIsValid()) {
-            firebase.doSignInWithEmailAndPassword(mailInput, passwordInput).then(console.log).catch(console.error)
+            firebase
+                .doSignInWithEmailAndPassword(mailInput, passwordInput)
+                .then(console.log)
+                .catch(console.error)
         }
     }
 
@@ -35,7 +38,9 @@ export const Login: React.FC<LoginProps> = () => {
                 type="password"
                 placeholder="Lösenord"
                 value={passwordInput}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPasswordInput(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setPasswordInput(e.target.value)
+                }
             />
             <button onClick={handleLogin}>Logga In</button>
         </form>

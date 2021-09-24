@@ -1,8 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { useFirebase } from '../assets/'
-import { Select, Option } from './Select'
-import { useDebouncedInput } from '../assets/hooks'
+import React, { useEffect, useRef, useState } from 'react'
 import '../styles/Upload.scss'
+import { useDebouncedInput, useFirebase } from '../utils/'
+import { Option, Select } from './Select'
 
 const INITIAL_INPUT = {
     place: '',

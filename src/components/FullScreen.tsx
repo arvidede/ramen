@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { Close, Next, Previous } from '../assets/'
-import '../styles/Fullscreen.scss'
 import clsx from 'clsx'
+import React, { useCallback, useEffect, useState } from 'react'
+import '../styles/Fullscreen.scss'
+import { Close, Next, Previous } from './Icons'
 
 const TRANSITION_TIMEOUT = 300
 

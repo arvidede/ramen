@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
 import clsx from 'clsx'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import '../styles/Image.scss'
-import { PhotoType } from '../assets/constants'
-import { isMobile } from '../assets/helpers'
-import { useIntersectionObserver } from '../assets/hooks'
-import { Spinner } from '../assets'
+import { isMobile } from '../utils/helpers'
+import { useIntersectionObserver } from '../utils/hooks'
+import { Photo } from '../utils/types'
+import { Spinner } from './Spinner'
 
 interface ImgProps {
-    photo: PhotoType
+    photo: Photo
     className: string
     onClick: () => void
 }
