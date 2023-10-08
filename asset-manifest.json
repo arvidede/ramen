@@ -1,22 +1,13 @@
 {
   "files": {
-    "main.css": "/ramen/static/css/main.b4ba6098.chunk.css",
-    "main.js": "/ramen/static/js/main.ac0d44a7.chunk.js",
-    "main.js.map": "/ramen/static/js/main.ac0d44a7.chunk.js.map",
-    "runtime-main.js": "/ramen/static/js/runtime-main.2647f9f1.js",
-    "runtime-main.js.map": "/ramen/static/js/runtime-main.2647f9f1.js.map",
-    "static/js/2.d081d6d6.chunk.js": "/ramen/static/js/2.d081d6d6.chunk.js",
-    "static/js/2.d081d6d6.chunk.js.map": "/ramen/static/js/2.d081d6d6.chunk.js.map",
+    "main.css": "/ramen/static/css/main.464eb311.css",
+    "main.js": "/ramen/static/js/main.7839ba17.js",
     "index.html": "/ramen/index.html",
-    "precache-manifest.f9b7285144e9b3eadcfa5b3987aaaefb.js": "/ramen/precache-manifest.f9b7285144e9b3eadcfa5b3987aaaefb.js",
-    "service-worker.js": "/ramen/service-worker.js",
-    "static/css/main.b4ba6098.chunk.css.map": "/ramen/static/css/main.b4ba6098.chunk.css.map",
-    "static/js/2.d081d6d6.chunk.js.LICENSE.txt": "/ramen/static/js/2.d081d6d6.chunk.js.LICENSE.txt"
+    "main.464eb311.css.map": "/ramen/static/css/main.464eb311.css.map",
+    "main.7839ba17.js.map": "/ramen/static/js/main.7839ba17.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.2647f9f1.js",
-    "static/js/2.d081d6d6.chunk.js",
-    "static/css/main.b4ba6098.chunk.css",
-    "static/js/main.ac0d44a7.chunk.js"
+    "static/css/main.464eb311.css",
+    "static/js/main.7839ba17.js"
   ]
 }
