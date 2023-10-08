@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import '../styles/Login.scss'
 import { useFirebase } from '../utils/'
 
-type LoginProps = {}
-
-export const Login: React.FC<LoginProps> = () => {
+export const Login: React.FC = () => {
     const [mailInput, setMailInput] = useState('')
     const [passwordInput, setPasswordInput] = useState('')
 
     const firebase = useFirebase()
-
-    useEffect(() => {}, [])
 
     const inputIsValid = (): boolean => {
         return mailInput.length > 0 && passwordInput.length > 0

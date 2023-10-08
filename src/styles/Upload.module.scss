@@ -1,5 +1,11 @@
-.upload-wrapper {
+.wrapper {
     padding: 1rem;
+
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+    }
+
     form {
         width: 50vw;
         min-width: 320px;
@@ -11,13 +17,13 @@
         align-items: center;
         justify-content: center;
 
-        .form-input,
-        .form-button {
+        .formInput,
+        button {
             width: 100%;
             margin: 0.5rem 0;
         }
 
-        .form-input {
+        .formInput {
             display: flex;
             flex-direction: column;
             input[type='text'] {
@@ -32,10 +38,9 @@
         input[type='text'] {
             margin-top: 0.5rem;
         }
-    }
-
-    button {
-        padding: 1rem;
+        button {
+            padding: 1rem;
+        }
     }
 
     @media screen and (max-width: 768px) {

@@ -2,7 +2,10 @@ import React from 'react'
 import '../styles/Spinner.scss'
 import clsx from 'clsx'
 
-export const Spinner = ({ spin = true }) => (
+interface Props {
+    spin?: boolean
+}
+export const Spinner = ({ spin = true }: Props) => (
     <svg className="spinner" width="209" height="209" viewBox="0 0 209 209" fill="none">
         <g id="ramenIcon">
             <g className={clsx('textCircle', spin && 'loading')}>

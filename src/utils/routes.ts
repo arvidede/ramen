@@ -1,2 +1,6 @@
-export const GALLERY = '/'
-export const ADMIN = '/admin'
+enum Routes {
+    Gallery = '/',
+    Admin = '/admin',
+}
+
+export default Routes

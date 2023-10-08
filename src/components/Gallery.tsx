@@ -59,7 +59,7 @@ const Gallery: React.FC<GalleryProps> = ({ photos }) => {
                     <p>
                         Powered with{' '}
                         <span role="img" aria-label="">
-                            💜
+                            🍜
                         </span>{' '}
                         by <a href="https://edenheim.se">Arvid</a>
                     </p>

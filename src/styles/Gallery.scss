@@ -9,7 +9,7 @@ body,
     padding: 0;
     font-family: sans-serif;
     height: 100%;
-    overflow: hidden;
+    scroll-behavior: smooth;
 }
 
 header {
@@ -23,8 +23,6 @@ header {
 }
 
 .gallery-wrapper {
-    overflow: scroll;
-    scroll-behavior: smooth;
     height: 100%;
     opacity: 0;
     transition: ease 1s;

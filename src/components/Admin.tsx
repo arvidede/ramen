@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { useFirebase } from '../utils'
 import { Login } from './Login'
 import { Upload } from './Upload'
+import type { User } from 'firebase/auth'
 
 export const Admin: React.FC = () => {
-    const [authUser, setAuthUser] = useState<null | string>(null)
+    const [authUser, setAuthUser] = useState<null | User>(null)
     const firebase = useFirebase()
 
     useEffect(() => {
-        let user = localStorage.getItem('authUser')
-        user = user ? JSON.parse(user) : null
+        const userString = localStorage.getItem('authUser')
+        const user = userString ? JSON.parse(userString) : null
         setAuthUser(user)
 
         const listener = firebase.onAuthStateChanged(
-            (authUser: any) => {
+            authUser => {
                 localStorage.setItem('authUser', JSON.stringify(authUser))
                 setAuthUser(authUser)
             },

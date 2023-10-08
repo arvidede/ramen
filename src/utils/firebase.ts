@@ -1,9 +1,20 @@
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/firestore'
-import 'firebase/storage'
+import { initializeApp } from 'firebase/app'
+import {
+    Auth,
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+} from 'firebase/auth'
+import { Firestore, getFirestore, setDoc, doc, getDocs, collection } from 'firebase/firestore'
+import type { User } from 'firebase/auth'
+import { FirebaseStorage, getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { GOOGLE_MAPS_BASE_URL, GOOGLE_PLACES_BASE_URL } from './constants'
 import { SearchResult } from './types'
+
+enum ResponseStatus {
+    Ok = 'ok',
+    Error = 'error',
+}
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -13,53 +24,53 @@ const config = {
     storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 }
-
 export class Firebase {
-    db: any
-    auth: any
-    storage: any
+    db: Firestore
+    auth: Auth
+    storage: FirebaseStorage
     constructor() {
         if (process.env.NODE_ENV === 'development') {
             console.log('Initializing firebase in dev environment')
             console.log(process.env.REACT_APP_AUTH_DOMAIN)
         }
-        firebase.initializeApp(config)
-        this.db = firebase.firestore()
-        this.auth = firebase.auth()
-        this.storage = firebase.storage()
+        const firebaseApp = initializeApp(config)
+        this.db = getFirestore(firebaseApp)
+        this.auth = getAuth(firebaseApp)
+        this.storage = getStorage(firebaseApp)
     }
+
+    ref = () => ref(this.storage)
 
     doUploadImage = async (
         file: File,
         place: string,
         placeId: string,
-    ): Promise<{ status: 'ok' } | { status: 'error'; error: string }> => {
-        const fileRef = this.storage.ref()
-
+    ): Promise<{ status: ResponseStatus.Ok } | { status: ResponseStatus.Error; error: string }> => {
         if (file.name.includes('.heic'))
             return {
-                status: 'error',
+                status: ResponseStatus.Error,
                 error: 'The provided file was in the wrong format. Please use .jpg, .jpeg or .png.',
             }
 
-        return fileRef
-            .child(`images/${file.name}`)
-            .put(file)
-            .then((snapshot: any) => {
-                snapshot.ref
-                    .getDownloadURL()
-                    .then((imageURL: string) => {
-                        this.db.collection('images').add({
-                            src: imageURL,
-                            place,
-                            location: placeId ? `${GOOGLE_MAPS_BASE_URL}${placeId}` : null,
-                        })
-                    })
-                    .then(() => ({
-                        status: 'ok',
-                    }))
-                    .catch((error: string) => ({ status: 'error', error }))
-            })
+        const fileRef = ref(this.storage, `images/${file.name}`)
+
+        const snapshot = await uploadBytes(fileRef, file)
+        const imageURL = await getDownloadURL(snapshot.ref)
+
+        const response = await setDoc(doc(this.db, 'images'), {
+            src: imageURL,
+            place,
+            location: placeId ? `${GOOGLE_MAPS_BASE_URL}${placeId}` : null,
+        })
+            .then(
+                () =>
+                    ({
+                        status: ResponseStatus.Ok,
+                    } as const),
+            )
+            .catch((error: string) => ({ status: ResponseStatus.Error, error }))
+
+        return response
     }
 
     doSearchForPlace = (input: string): Promise<SearchResult> =>
@@ -71,26 +82,20 @@ export class Firebase {
         console.log('Deleting image')
     }
 
-    doGetImages = () => this.db.collection('images').get()
+    doGetImages = () => getDocs(collection(this.db, 'images'))
 
     // *** Auth API ***
 
     doCreateUserWithEmailAndPassword = (email: string, password: string) =>
-        this.auth.createUserWithEmailAndPassword(email, password)
+        createUserWithEmailAndPassword(this.auth, email, password)
 
     doSignInWithEmailAndPassword = (email: string, password: string) =>
-        this.auth.signInWithEmailAndPassword(email, password)
-
-    doSendEmailVerification = () => this.auth.currentUser.sendEmailVerification()
+        signInWithEmailAndPassword(this.auth, email, password)
 
     doSignOut = () => this.auth.signOut()
 
-    doPasswordReset = (email: string) => this.auth.sendPasswordResetEmail(email)
-
-    doPasswordUpdate = (password: string) => this.auth.currentUser.updatePassword(password)
-
-    onAuthStateChanged = (next: (user: any) => void, fallback: () => void) => {
-        return this.auth.onAuthStateChanged((user: any) => {
+    onAuthStateChanged = (next: (user: User) => void, fallback: () => void) => {
+        return this.auth.onAuthStateChanged(user => {
             if (user) {
                 next(user)
             } else {
@@ -98,8 +103,6 @@ export class Firebase {
             }
         })
     }
-
-    user = (uid: string) => this.db.ref(`users/${uid}`)
 }
 
 export default Firebase

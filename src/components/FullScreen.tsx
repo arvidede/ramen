@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import React, { useCallback, useEffect, useState } from 'react'
 import '../styles/Fullscreen.scss'
-import { Close, Next, Previous } from './Icons'
+import { Close } from './Icons'
 
 const TRANSITION_TIMEOUT = 300
 
@@ -72,20 +72,14 @@ export const FullScreen: React.FC<FullScreenProps> = ({
 
     return (
         <div className={className}>
+            <div className="backdrop" onClick={handleClose} />
             {src && <img src={src} alt="" loading="lazy" />}
-            <div className="fullscreen-bg" onClick={handleClose} />
-            <button className="previous" onClick={() => onChange(true)}>
-                <Previous />
-            </button>
+            <div className="location">
+                <a href={location}>{place}</a>
+            </div>
             <button className="close" onClick={handleClose}>
                 <Close />
             </button>
-            <button className="next" onClick={() => onChange(false)}>
-                <Next />
-            </button>
-            <div className="bottom-info">
-                <a href={location}>{place}</a>
-            </div>
         </div>
     )
 }

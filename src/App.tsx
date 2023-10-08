@@ -1,8 +1,8 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes as Switch } from 'react-router-dom'
 import { Admin, Gallery } from './components'
 import './styles/App.scss'
-import * as ROUTES from './utils/routes'
+import Routes from './utils/routes'
 
 /*
 TODO:
@@ -21,13 +21,16 @@ const App: React.FC = () => {
     return (
         <Router basename={process.env.PUBLIC_URL}>
             <Switch>
-                <Route path={ROUTES.ADMIN} exact component={Admin} />
-                <Route path={ROUTES.GALLERY} exact component={Gallery} />
-                <Route>
-                    <div>
-                        <p>404</p>
-                    </div>
-                </Route>
+                <Route path={Routes.Admin} element={<Admin />} />
+                <Route path={Routes.Gallery} element={<Gallery />} />
+                <Route
+                    path="*"
+                    Component={() => (
+                        <div>
+                            <p>404</p>
+                        </div>
+                    )}
+                ></Route>
             </Switch>
         </Router>
     )

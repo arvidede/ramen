@@ -8,9 +8,9 @@ export const usePhotos = () => {
 
     const firebase = useFirebase()
     useEffect(() => {
-        firebase.doGetImages().then((querySnapshot: any) => {
-            const data: Photo[] = querySnapshot.docs.map((doc: any) => ({
-                ...doc.data(),
+        firebase.doGetImages().then(querySnapshot => {
+            const data: Photo[] = querySnapshot.docs.map(doc => ({
+                ...(doc.data() as Photo),
                 id: Math.random().toString(),
             }))
             setIsLoading(false)

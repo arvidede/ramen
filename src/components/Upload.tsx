@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import '../styles/Upload.scss'
+import styles from '../styles/Upload.module.scss'
 import { useDebouncedInput, useFirebase } from '../utils/'
 import { compressImage } from '../utils/helpers'
 import { Option, Select } from './Select'
+import { Link } from 'react-router-dom'
 
 const INITIAL_INPUT = {
     place: '',
@@ -73,16 +74,21 @@ export const Upload: React.FC = () => {
                 setIsLoading(false)
             })
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedInput, firebase])
 
     useEffect(() => {
         if (input.location.length > 0 && !isLoading) setIsLoading(true)
-    }, [input.location])
+    }, [input.location, isLoading])
 
     return (
-        <div className="upload-wrapper">
+        <div className={styles.wrapper}>
+            <div className={styles.navigation}>
+                <button onClick={firebase.doSignOut}>Logga ut</button>
+                <Link to="/">Tillbaka</Link>
+            </div>
             <form>
-                <div className="select">
+                <div className={styles.select}>
                     <label htmlFor="">Plats</label>
                     <Select
                         name="location"
@@ -96,7 +102,7 @@ export const Upload: React.FC = () => {
                         inputPlaceholder="Sök efter nudlarna"
                     />
                 </div>
-                <div className="form-input">
+                <div className={styles.formInput}>
                     <label htmlFor="">Restaurang</label>
                     <input
                         type="text"
@@ -107,15 +113,14 @@ export const Upload: React.FC = () => {
                         onChange={handleInputChange}
                     />
                 </div>
-                <div className="form-input">
+                <div className={styles.formInput}>
                     <label htmlFor="" />
                     <input ref={fileRef} type="file" multiple />
                 </div>
-                <button className="form-button" onClick={handleSubmit} disabled={isSubmitting}>
+                <button onClick={handleSubmit} disabled={isSubmitting}>
                     {isSubmitting ? '...' : 'Skicka'}
                 </button>
             </form>
-            <button onClick={firebase.doSignOut}>Logga ut</button>
         </div>
     )
 }

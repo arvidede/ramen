@@ -39,7 +39,7 @@ export const Select: React.FC<SelectProps> = ({
         if (!showOptions) setShowOptions(true)
     }
 
-    const handleBlur = (e: any) => {
+    const handleBlur = () => {
         setShowOptions(false)
     }
 
